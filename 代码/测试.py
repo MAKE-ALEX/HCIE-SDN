@@ -1,10 +1,12 @@
 def in_weather():
+    # 输入气温和气压
     temperature = input('请输入今天气温（单位 摄氏度）:')
     air_pressure = input('请输入今天气压（单位 帕）:')
     return temperature, air_pressure
 
 
 def weather(temperature, air_pressure):
+    # 进行判断
     if 25 < temperature <= 30 and 200 < air_pressure <= 300:
         print('比较舒适')
     elif 10 < temperature <= 25 and 100 < air_pressure <= 200:
