@@ -439,19 +439,56 @@
 #
 # print(car.tires[0].size)
 
-def equals(*nums):
-    # 定义统计表
-    stats = {}
-    for num in nums:
-        # 已经在统计表中
-        if num in stats:
-            stats[num] += 1
-        # 不在统计表中
-        else:
-            stats[num] = 1
+# def equals(*nums):
+#     # 定义统计表
+#     stats = {}
+#     for num in nums:
+#         # 已经在统计表中
+#         if num in stats:
+#             stats[num] += 1
+#         # 不在统计表中
+#         else:
+#             stats[num] = 1
+#
+#     for num, times in stats.items():
+#         print(f'数字 {num} 出现了 {times} 次')
+#
+#
+# equals(3, 4, 3, 4, 1, 6, 2)
 
-    for num, times in stats.items():
-        print(f'数字 {num} 出现了 {times} 次')
+# import os
+# os.makedirs('tmp/pyrhon3/fileop',exist_ok=True)
 
+from subprocess import PIPE, Popen
 
-equals(3, 4, 3, 4, 1, 6, 2)
+# 返回的是 Popen 实例对象
+proc = Popen(
+    'fsutil volume diskfree c:',
+    stdin=None,
+    stdout=PIPE,
+    stderr=PIPE,
+    shell=True)
+
+# communicate 方法返回 输出到 标准输出 和 标准错误 的字节串内容
+# 标准输出设备和 标准错误设备 当前都是本终端设备
+outinfo, errinfo = proc.communicate()
+
+# 注意返回的内容是bytes 不是 str ，我的是中文windows，所以用gbk解码
+outinfo = outinfo.decode('gbk')
+errinfo = errinfo.decode('gbk')
+print(outinfo)
+print('-------------')
+print(errinfo)
+
+outputList = outinfo.splitlines()
+
+# 剩余量
+free = int(outputList[0].split(':')[1].replace(',', '').split('(')[0].strip())
+
+# 总空间
+total = int(outputList[1].split(':')[1].replace(',', '').split('(')[0].strip())
+
+if (free / total < 0.1):
+    print('!! 剩余空间告急！！')
+else:
+    print('剩余空间足够')
